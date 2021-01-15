@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Tasks
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr class="d-flex">
+                <th class="col-2">{{ knp_pagination_sortable(pagination, 'Name', 'user_name') }}</th>
+                <th class="col-2">{{ knp_pagination_sortable(pagination, 'Email', 'user_email') }}</th>
+                <th class={{ auth.isAuth ? "col-5" : "col-7" }}>{{ knp_pagination_sortable(pagination, 'Content', 'content') }}</th>
+                <th class="col-1">{{ knp_pagination_sortable(pagination, 'Status', 'completed') }}</th>
+                {% if auth.isAuth %}
+                    <th class="col-2">Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for task in pagination %}
+                <tr class="d-flex">
+                    <td class="col-2 text-break">{{ task.name }}</td>
+                    <td class="col-2 text-break">{{ task.email }}</td>
+                    <td class="{{ auth.isAuth ? "col-5 text-break" : "col-7 text-break" }}">{{ task.content }}</td>
+                    <td class="col-1">
+                        {{ status(task.completed, 'completed') }}
+                        {{ status(task.edited, 'edited') }}
+                    </td>
+                    {% if auth.isAuth %}
+                        <td class="col-2">
+                            <a class="m-1 btn btn-sm btn-primary" href="{{ path('tasks.edit', {"id": task.id}) }}">Edit</a>
+                            <form action="{{ path('tasks.complete', {"id": task.id}) }}" method="POST">
+                                <button type="submit" class="m-1 btn btn-sm btn-primary">Complete</button>
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+{% endblock %}

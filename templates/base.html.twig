@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="{{ assets('assets/js/bootstrap.js') }}"></script>
+    <link href="{{ assets('assets/css/bootstrap.css') }}" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+
+<body class="d-flex flex-column h-100">
+<header>
+    <nav class="navbar navbar-light bg-light">
+        <div class="navbar-nav flex-row">
+            <a class="navbar-brand" href="">Tasks</a>
+            <a class="nav-item nav-link mx-2" href="/">Home</a>
+            <a class="nav-item nav-link mx-2" href="/create">Create</a>
+        </div>
+
+        {% if auth.isAuth %}
+            <div class="form-inline">
+                <a class="navbar-brand" href="{{ path('logout') }}">Logout</a>
+            </div>
+        {% else %}
+            <div class="form-inline">
+                <a class="navbar-brand" href="{{ path('login') }}">Sign in</a>
+            </div>
+        {% endif %}
+
+    </nav>
+</header>
+
+<main role="main" class="flex-shrink-0">
+    <div class="container pt-5">
+        {% include '_flashes.html.twig' %}
+        {% block body %}{% endblock %}
+    </div>
+</main>
+
+
+<footer class="footer mt-auto py-3">
+    <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+</footer>
+</body>
+
+</html>

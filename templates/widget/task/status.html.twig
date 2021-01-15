@@ -1,0 +1,5 @@
+{% if status and  type == 'completed' %}
+    <span class="badge badge-success">Completed</span>
+{% elseif status == 'edited' %}
+    <span class="badge badge-secondary">Edited</span>
+{% endif %}
