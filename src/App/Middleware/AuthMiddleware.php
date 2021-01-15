@@ -24,6 +24,6 @@ class AuthMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        return new RedirectResponse('/', 401);
+        return new RedirectResponse('/login', 302);
     }
 }
