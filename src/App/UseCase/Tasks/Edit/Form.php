@@ -13,7 +13,11 @@ class Form extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content', TextareaType::class);
+            ->add('content', TextareaType::class, [
+                'attr' => [
+                    'rows' => '5'
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

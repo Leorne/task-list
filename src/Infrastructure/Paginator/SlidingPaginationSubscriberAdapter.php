@@ -1,13 +1,18 @@
 <?php
 
-namespace Infrastructure;
+namespace Infrastructure\Paginator;
 
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Knp\Bundle\PaginatorBundle\Subscriber\SlidingPaginationSubscriber;
 use Knp\Bundle\PaginatorBundle\Subscriber\SlidingPaginationSubscriber as ParentSubscriber;
 use Knp\Component\Pager\Event\PaginationEvent;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class SlidingPaginationSubscriberAdapter
+ * @see SlidingPaginationSubscriber
+ */
 class SlidingPaginationSubscriberAdapter implements EventSubscriberInterface
 {
     private $route;

@@ -3,12 +3,12 @@
 namespace App\Controller\Task;
 
 use App\Controller\AbstractController;
+use App\Entity\Task\Id;
 use App\Entity\Task\TaskRepository;
 use App\ReadModel\Task\TaskFetcher;
 use App\UseCase\Tasks\Create;
 use App\UseCase\Tasks\Edit;
 use App\UseCase\Tasks\Complete;
-use Knp\Component\Pager\PaginatorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -23,16 +23,9 @@ class TaskController extends AbstractController
         $this->tasks = $tasks;
     }
 
-    public function index(ServerRequestInterface $request, array $args): ResponseInterface
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
-        $repo = $this->container->get(TaskRepository::class);
-
-        $tasks = $repo->all();
-        $paginator = $this->container->get(PaginatorInterface::class);
         $query = $request->getQueryParams();
-
-        $options = [];
-        $params = [];
 
         $pagination = $this->tasks->all(
             $query['page'] ?? 1,
@@ -43,8 +36,6 @@ class TaskController extends AbstractController
 
         return $this->render('task/index', [
             'pagination' => $pagination,
-            'options' => $options,
-            'params' => $params
         ]);
     }
 
@@ -73,8 +64,10 @@ class TaskController extends AbstractController
 
     public function edit(ServerRequestInterface $request): ResponseInterface
     {
-        $command = new Edit\Command();
-        $command->id = $request->getAttribute('id');
+        $taskId = $request->getAttribute('id');
+        $repository = $this->container->get(TaskRepository::class);
+        $task = $repository->get(new Id($taskId));
+        $command = Edit\Command::fromTask($task);
 
         $form = $this->createForm(Edit\Form::class, $command);
         $form->handleRequest();

@@ -15,7 +15,12 @@ class Form extends AbstractType
         $builder
             ->add('userName', TextType::class, ['required' => false])
             ->add('userEmail', TextType::class, ['required' => false])
-            ->add('content', TextareaType::class, ['required' => false]);
+            ->add('content', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'rows' => '5'
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
